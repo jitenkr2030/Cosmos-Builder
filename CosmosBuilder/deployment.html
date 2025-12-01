@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmosBuilder - Deployment & Hosting</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cosmos-blue': '#1e3a8a',
+                        'cosmos-purple': '#7c3aed',
+                        'cosmos-gold': '#f59e0b',
+                        'cosmos-green': '#10b981',
+                        'dark-bg': '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #f59e0b 100%);
+        }
+        .deployment-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .deployment-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+        .deployment-selected {
+            border: 2px solid #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+        .provider-logo {
+            filter: grayscale(100%) opacity(0.6);
+            transition: all 0.3s ease;
+        }
+        .provider-logo:hover {
+            filter: grayscale(0%) opacity(1);
+        }
+        .progress-step {
+            transition: all 0.3s ease;
+        }
+        .progress-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        .progress-completed {
+            background: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xl font-bold gradient-bg bg-clip-text text-transparent">CosmosBuilder</div>
+                    <div class="text-gray-400">|</div>
+                    <div class="text-sm text-gray-300">Deployment & Hosting</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="text-sm text-gray-400">
+                        Chain: <span class="text-cosmos-gold">CosmosBuilder-Testnet</span>
+                    </div>
+                    <div class="w-8 h-8 bg-cosmos-purple rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-80 bg-gray-800 min-h-screen p-6">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold mb-4">Deployment Progress</h2>
+                <div class="space-y-4">
+                    <div class="flex items-center progress-step progress-completed">
+                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">✓</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Chain Configuration</div>
+                            <div class="text-xs text-gray-400">Complete</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center progress-step progress-completed">
+                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">✓</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Module Selection</div>
+                            <div class="text-xs text-gray-400">Complete</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center progress-step progress-completed">
+                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">✓</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Consensus Setup</div>
+                            <div class="text-xs text-gray-400">Complete</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center progress-step progress-active">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold">4</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Deployment</div>
+                            <div class="text-xs text-gray-400">In Progress</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Cost Calculator -->
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Monthly Cost Estimate</h3>
+                <div class="bg-gray-900 p-4 rounded-lg">
+                    <div class="space-y-2 text-sm">
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Base Infrastructure</span>
+                            <span>$299</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Premium Modules</span>
+                            <span>$597</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-gray-400">Validator Hosting</span>
+                            <span>$450</span>
+                        </div>
+                        <div class="border-t border-gray-700 pt-2 mt-2">
+                            <div class="flex justify-between font-semibold">
+                                <span>Total</span>
+                                <span class="text-cosmos-gold">$1,346/month</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Deployment Status -->
+            <div class="bg-gray-900 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Deployment Status</h3>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Build Status</span>
+                        <span class="text-green-400">✓ Ready</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Code Generation</span>
+                        <span class="text-green-400">✓ Complete</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Security Scan</span>
+                        <span class="text-cosmos-gold">⚠ Pending</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Deployment</span>
+                        <span class="text-gray-400">⏳ Waiting</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Choose Your Deployment Method</h1>
+                <p class="text-gray-400">Select where and how you want to host your blockchain infrastructure</p>
+            </div>
+
+            <!-- Deployment Options -->
+            <div class="space-y-8">
+                <!-- Managed Hosting -->
+                <div class="deployment-card bg-gray-800 p-8 rounded-xl border border-gray-700 deployment-selected">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 gradient-bg rounded-xl flex items-center justify-center mr-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold mb-2">CosmosBuilder Cloud (Recommended)</h2>
+                                <p class="text-gray-400">Fully managed blockchain hosting with automatic scaling, monitoring, and 24/7 support</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-cosmos-gold">$299</div>
+                            <div class="text-gray-400 text-sm">/month</div>
+                            <div class="text-green-400 text-sm">Save 30%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold mb-3">Features Included</h3>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Managed validator nodes (up to 10)
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Automatic scaling & load balancing
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Real-time monitoring & alerts
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Backup & disaster recovery
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    99.9% uptime SLA guarantee
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    24/7 technical support
+                                </li>
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold mb-3">Configuration</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Node Configuration</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                        <option>Standard (2 CPU, 4GB RAM)</option>
+                                        <option>High Performance (4 CPU, 8GB RAM)</option>
+                                        <option>Enterprise (8 CPU, 16GB RAM)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Geographic Regions</label>
+                                    <div class="flex space-x-2">
+                                        <span class="bg-cosmos-blue px-3 py-1 rounded-full text-xs">US-East</span>
+                                        <span class="bg-cosmos-blue px-3 py-1 rounded-full text-xs">Europe</span>
+                                        <span class="bg-gray-600 px-3 py-1 rounded-full text-xs">Asia-Pacific</span>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2">
+                                        <span class="text-sm">Enable auto-scaling based on network load</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="text-sm text-green-400 font-medium">✓ Selected</div>
+                                <div class="text-sm text-gray-400">Best for: Production mainnets, DeFi protocols</div>
+                            </div>
+                            <button class="bg-cosmos-blue hover:bg-blue-700 px-6 py-2 rounded-lg text-sm font-medium transition-colors">
+                                Configure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cloud Providers -->
+                <div class="deployment-card bg-gray-800 p-8 rounded-xl border border-gray-700">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-gray-700 rounded-xl flex items-center justify-center mr-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold mb-2">Cloud Providers (DIY)</h2>
+                                <p class="text-gray-400">Deploy on AWS, Google Cloud, or Azure with our automation templates</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-400">Variable</div>
+                            <div class="text-gray-400 text-sm">Pay-as-use</div>
+                            <div class="text-blue-400 text-sm">High Control</div>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-semibold mb-4">Select Provider</h3>
+                        <div class="grid md:grid-cols-3 gap-4">
+                            <div class="provider-card bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-blue-500 transition-colors cursor-pointer">
+                                <div class="text-center">
+                                    <div class="provider-logo text-4xl mb-3">☁️</div>
+                                    <div class="font-semibold">Amazon Web Services</div>
+                                    <div class="text-sm text-gray-400">EC2, EKS, RDS</div>
+                                </div>
+                            </div>
+                            <div class="provider-card bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-blue-500 transition-colors cursor-pointer">
+                                <div class="text-center">
+                                    <div class="provider-logo text-4xl mb-3">🌐</div>
+                                    <div class="font-semibold">Google Cloud</div>
+                                    <div class="text-sm text-gray-400">GKE, Cloud SQL</div>
+                                </div>
+                            </div>
+                            <div class="provider-card bg-gray-700 p-6 rounded-lg border border-gray-600 hover:border-blue-500 transition-colors cursor-pointer">
+                                <div class="text-center">
+                                    <div class="provider-logo text-4xl mb-3">⚡</div>
+                                    <div class="font-semibold">Microsoft Azure</div>
+                                    <div class="text-sm text-gray-400">AKS, Cosmos DB</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold mb-3">Deployment Options</h3>
+                            <div class="space-y-3">
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">Kubernetes Cluster</div>
+                                        <div class="text-sm text-gray-400">Container orchestration</div>
+                                    </div>
+                                    <div class="text-cosmos-gold">Recommended</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">Virtual Machines</div>
+                                        <div class="text-sm text-gray-400">Traditional deployment</div>
+                                    </div>
+                                    <div class="text-gray-400">Basic</div>
+                                </div>
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded-lg">
+                                    <div>
+                                        <div class="font-medium">Serverless</div>
+                                        <div class="text-sm text-gray-400">Lambda Functions</div>
+                                    </div>
+                                    <div class="text-gray-400">Experimental</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold mb-3">Infrastructure Automation</h3>
+                            <ul class="space-y-2 text-sm">
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Terraform templates provided
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Helm charts for Kubernetes
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Docker container images
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    Monitoring stack included
+                                </li>
+                                <li class="flex items-center">
+                                    <span class="text-green-400 mr-2">✓</span>
+                                    CI/CD pipeline setup
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Self-Hosted -->
+                <div class="deployment-card bg-gray-800 p-8 rounded-xl border border-gray-700">
+                    <div class="flex items-start justify-between mb-6">
+                        <div class="flex items-center">
+                            <div class="w-16 h-16 bg-gray-700 rounded-xl flex items-center justify-center mr-6">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-semibold mb-2">Self-Hosted (On-Premise)</h2>
+                                <p class="text-gray-400">Full control with Docker, Kubernetes, or bare metal deployment</p>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-2xl font-bold text-gray-400">Custom</div>
+                            <div class="text-gray-400 text-sm">Enterprise</div>
+                            <div class="text-red-400 text-sm">High Complexity</div>
+                        </div>
+                    </div>
+                    
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <h3 class="font-semibold mb-3">Deployment Methods</h3>
+                            <div class="space-y-3">
+                                <div class="p-4 bg-gray-700 rounded-lg">
+                                    <div class="font-medium mb-1">Docker Compose</div>
+                                    <div class="text-sm text-gray-400">Single-node deployment for testing</div>
+                                    <div class="text-xs text-cosmos-gold mt-1">Recommended for development</div>
+                                </div>
+                                <div class="p-4 bg-gray-700 rounded-lg">
+                                    <div class="font-medium mb-1">Kubernetes</div>
+                                    <div class="text-sm text-gray-400">Multi-node production deployment</div>
+                                    <div class="text-xs text-blue-400 mt-1">Production ready</div>
+                                </div>
+                                <div class="p-4 bg-gray-700 rounded-lg">
+                                    <div class="font-medium mb-1">Bare Metal</div>
+                                    <div class="text-sm text-gray-400">Direct installation on servers</div>
+                                    <div class="text-xs text-red-400 mt-1">Expert level</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h3 class="font-semibold mb-3">Requirements</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Hardware Configuration</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                        <option>Validator Node (2 CPU, 4GB RAM)</option>
+                                        <option>Full Node (4 CPU, 8GB RAM)</option>
+                                        <option>Archive Node (8 CPU, 16GB RAM)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Operating System</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                        <option>Ubuntu 20.04 LTS</option>
+                                        <option>Ubuntu 22.04 LTS</option>
+                                        <option>CentOS 8</option>
+                                        <option>Custom</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Network Configuration</label>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span class="text-sm">Enable firewall rules</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span class="text-sm">Setup SSL/TLS certificates</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span class="text-sm">Configure monitoring agents</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <div class="bg-gray-900 p-4 rounded-lg">
+                            <h4 class="font-medium mb-2">Enterprise Features Available</h4>
+                            <div class="grid md:grid-cols-2 gap-4 text-sm">
+                                <ul class="space-y-1">
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        White-label solution
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        Custom SLAs
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        Dedicated support team
+                                    </li>
+                                </ul>
+                                <ul class="space-y-1">
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        On-site training
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        Compliance consulting
+                                    </li>
+                                    <li class="flex items-center">
+                                        <span class="text-green-400 mr-2">✓</span>
+                                        Custom integrations
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Launch Configuration -->
+            <div class="mt-12 bg-gray-800 p-8 rounded-xl border border-gray-700">
+                <h2 class="text-2xl font-semibold mb-6">Launch Configuration</h2>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h3 class="font-semibold mb-4">Network Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Network Type</label>
+                                <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                    <option>Mainnet</option>
+                                    <option>Testnet</option>
+                                    <option>Devnet</option>
+                                    <option>Localnet</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Chain ID</label>
+                                <input type="text" value="cosmosbuilder-1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Genesis Time</label>
+                                <input type="datetime-local" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="font-semibold mb-4">Security Settings</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Key Management</label>
+                                <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                    <option>Hardware Security Module (HSM)</option>
+                                    <option>Cloud KMS</option>
+                                    <option>Local Key File</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">API Security</label>
+                                <div class="space-y-2">
+                                    <div class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2">
+                                        <span class="text-sm">Enable rate limiting</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2">
+                                        <span class="text-sm">Require API authentication</span>
+                                    </div>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" class="mr-2">
+                                        <span class="text-sm">Enable CORS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Backup Frequency</label>
+                                <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 focus:outline-none focus:border-cosmos-purple">
+                                    <option>Daily</option>
+                                    <option>Every 6 hours</option>
+                                    <option>Real-time</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-between items-center mt-12">
+                <button class="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors">
+                    ← Previous Step
+                </button>
+                <div class="flex space-x-4">
+                    <button class="px-6 py-3 border border-cosmos-gold text-cosmos-gold rounded-lg hover:bg-cosmos-gold hover:text-black transition-colors">
+                        Save Configuration
+                    </button>
+                    <button class="px-8 py-3 gradient-bg text-white rounded-lg hover:opacity-90 transition-opacity">
+                        Launch Blockchain 🚀
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Deployment option selection
+        document.querySelectorAll('.deployment-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.deployment-card').forEach(c => c.classList.remove('deployment-selected'));
+                this.classList.add('deployment-selected');
+            });
+        });
+
+        // Provider selection
+        document.querySelectorAll('.provider-card').forEach(card => {
+            card.addEventListener('click', function() {
+                document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('border-blue-500'));
+                this.classList.add('border-blue-500');
+            });
+        });
+
+        // Auto-fill genesis time (next hour)
+        const genesisInput = document.querySelector('input[type="datetime-local"]');
+        const now = new Date();
+        now.setHours(now.getHours() + 1, 0, 0, 0);
+        genesisInput.value = now.toISOString().slice(0, 16);
+    </script>
+</body>
+</html>

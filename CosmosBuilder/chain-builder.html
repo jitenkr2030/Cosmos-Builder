@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmosBuilder - Chain Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cosmos-blue': '#1e3a8a',
+                        'cosmos-purple': '#7c3aed',
+                        'cosmos-gold': '#f59e0b',
+                        'dark-bg': '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #f59e0b 100%);
+        }
+        .step-indicator {
+            transition: all 0.3s ease;
+        }
+        .step-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+        }
+        .step-completed {
+            background: #10b981;
+        }
+        .module-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .module-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        .module-selected {
+            border: 2px solid #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+        .parameter-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            border-radius: 4px;
+            background: #374151;
+            outline: none;
+        }
+        .parameter-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #7c3aed;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xl font-bold gradient-bg bg-clip-text text-transparent">CosmosBuilder</div>
+                    <div class="text-gray-400">|</div>
+                    <div class="text-sm text-gray-300">Chain Builder</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="text-gray-400 hover:text-white">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </button>
+                    <div class="w-8 h-8 bg-cosmos-purple rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-80 bg-gray-800 min-h-screen p-6">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold mb-4">Build Steps</h2>
+                
+                <!-- Step Indicator -->
+                <div class="space-y-3">
+                    <div class="flex items-center step-indicator step-completed">
+                        <div class="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center text-white text-sm font-bold">1</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Basic Info</div>
+                            <div class="text-xs text-gray-400">Chain details</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center step-indicator step-active">
+                        <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-sm font-bold">2</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Token Economics</div>
+                            <div class="text-xs text-gray-400">Token model</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center step-indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm font-bold">3</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Modules</div>
+                            <div class="text-xs text-gray-400">Select features</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center step-indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm font-bold">4</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Consensus</div>
+                            <div class="text-xs text-gray-400">Validator setup</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex items-center step-indicator">
+                        <div class="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white text-sm font-bold">5</div>
+                        <div class="ml-3">
+                            <div class="font-medium">Deploy</div>
+                            <div class="text-xs text-gray-400">Launch chain</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Actions -->
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Quick Actions</h3>
+                <div class="space-y-2">
+                    <button class="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                        Import Configuration
+                    </button>
+                    <button class="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                        Save Draft
+                    </button>
+                    <button class="w-full text-left px-3 py-2 text-sm text-gray-300 hover:bg-gray-700 rounded-lg">
+                        Export Template
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Chain Status -->
+            <div class="bg-gray-900 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Chain Status</h3>
+                <div class="space-y-2 text-sm">
+                    <div class="flex justify-between">
+                        <span class="text-gray-400">Progress</span>
+                        <span class="text-cosmos-gold">40%</span>
+                    </div>
+                    <div class="w-full bg-gray-700 rounded-full h-2">
+                        <div class="gradient-bg h-2 rounded-full" style="width: 40%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Configure Token Economics</h1>
+                <p class="text-gray-400">Design your blockchain's native token and economic model</p>
+            </div>
+
+            <!-- Token Configuration Form -->
+            <div class="max-w-4xl space-y-8">
+                <!-- Basic Token Info -->
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-6">Token Details</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Token Name</label>
+                            <input type="text" value="CosmosBuilder" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Symbol</label>
+                            <input type="text" value="BUILD" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Denomination</label>
+                            <input type="text" value="ubuild" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">The base unit of your token (micro build)</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Decimals</label>
+                            <input type="number" value="6" min="0" max="18" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Initial Supply -->
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-6">Initial Supply</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Initial Supply (tokens)</label>
+                            <input type="number" value="1000000000" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">Total tokens minted at genesis</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Distribution Model</label>
+                            <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                                <option>Custom Distribution</option>
+                                <option>Equal Distribution</option>
+                                <option>Community Focused</option>
+                                <option>VC Oriented</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Distribution Breakdown -->
+                    <div class="mt-6">
+                        <h3 class="text-lg font-medium mb-4">Token Distribution</h3>
+                        <div class="grid gap-4">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Community/Airdrop</span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" min="0" max="100" value="30" class="parameter-slider">
+                                    <span class="text-sm w-12">30%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Development Team</span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" min="0" max="100" value="20" class="parameter-slider">
+                                    <span class="text-sm w-12">20%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Foundation/Treasury</span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" min="0" max="100" value="25" class="parameter-slider">
+                                    <span class="text-sm w-12">25%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Validator Rewards</span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" min="0" max="100" value="15" class="parameter-slider">
+                                    <span class="text-sm w-12">15%</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-300">Public Sale/Investors</span>
+                                <div class="flex items-center space-x-3">
+                                    <input type="range" min="0" max="100" value="10" class="parameter-slider">
+                                    <span class="text-sm w-12">10%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Inflation Model -->
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-6">Inflation Model</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Inflation Type</label>
+                            <select class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                                <option>Dynamic Inflation</option>
+                                <option>Fixed Inflation</option>
+                                <option>Zero Inflation</option>
+                                <option>Deflationary</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Target Inflation Rate (%)</label>
+                            <input type="number" value="10" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                    </div>
+                    
+                    <!-- Inflation Parameters -->
+                    <div class="mt-6 grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Inflation Change Rate (%)</label>
+                            <input type="number" value="13" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">Annual inflation rate change</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Target Validator Revenue (%)</label>
+                            <input type="number" value="25" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">% of tokens minted going to validators</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Staking Parameters -->
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-6">Staking Parameters</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Minimum Stake</label>
+                            <input type="number" value="1000000" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">Minimum tokens to become a validator</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Maximum Validators</label>
+                            <input type="number" value="100" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Unbonding Period (days)</label>
+                            <input type="number" value="21" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                            <p class="text-xs text-gray-400 mt-1">Time to unbond tokens</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Max Commission Rate (%)</label>
+                            <input type="number" value="100" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Governance Parameters -->
+                <div class="bg-gray-800 p-6 rounded-xl">
+                    <h2 class="text-xl font-semibold mb-6">Governance</h2>
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Voting Period (days)</label>
+                            <input type="number" value="5" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Quorum (%)</label>
+                            <input type="number" value="33.4" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Threshold (%)</label>
+                            <input type="number" value="50" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium mb-2">Veto Threshold (%)</label>
+                            <input type="number" value="33.4" step="0.1" class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 focus:outline-none focus:border-cosmos-purple">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-between items-center mt-12">
+                <button class="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors">
+                    ← Previous Step
+                </button>
+                <div class="flex space-x-4">
+                    <button class="px-6 py-3 border border-cosmos-gold text-cosmos-gold rounded-lg hover:bg-cosmos-gold hover:text-black transition-colors">
+                        Save Draft
+                    </button>
+                    <button class="px-8 py-3 gradient-bg text-white rounded-lg hover:opacity-90 transition-opacity">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update slider values
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            slider.addEventListener('input', function() {
+                this.nextElementSibling.textContent = this.value + '%';
+            });
+        });
+
+        // Step navigation (placeholder)
+        document.querySelectorAll('.step-indicator').forEach((step, index) => {
+            step.addEventListener('click', function() {
+                if (this.classList.contains('step-completed') || this.classList.contains('step-active')) {
+                    // Navigate to step
+                    console.log('Navigate to step', index + 1);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

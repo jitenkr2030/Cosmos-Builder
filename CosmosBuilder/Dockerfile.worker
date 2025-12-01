@@ -1,0 +1,46 @@
+# Worker Dockerfile
+FROM python:3.9-slim
+
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    gcc \
+    g++ \
+    curl \
+    git \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy requirements first for better caching
+COPY requirements.txt .
+COPY requirements-worker.txt .
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements-worker.txt
+
+# Copy application code
+COPY api-server/ ./api-server/
+COPY blockchain-engine/ ./blockchain-engine/
+COPY config-manager/ ./config-manager/
+COPY deployment/ ./deployment/
+COPY security/ ./security/
+COPY governance/ ./governance/
+COPY developer-tools/ ./developer-tools/
+COPY monitoring/ ./monitoring/
+COPY scripts/ ./scripts/
+
+# Clone cosmos-sdk repository
+RUN git clone https://github.com/cosmos/cosmos-sdk.git /app/cosmos-sdk
+
+# Create necessary directories
+RUN mkdir -p /app/logs /app/deployments /app/temp
+
+# Set environment variables
+ENV PYTHONPATH=/app
+ENV PYTHONUNBUFFERED=1
+
+# Expose no ports (background worker)
+
+# Run the worker
+CMD ["celery", "-A", "api-server.celery_app", "worker", "--loglevel=info"]

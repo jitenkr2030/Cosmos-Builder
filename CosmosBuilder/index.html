@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmosBuilder - No-Code Sovereign Layer-1 Chain Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cosmos-blue': '#1e3a8a',
+                        'cosmos-purple': '#7c3aed',
+                        'cosmos-gold': '#f59e0b',
+                        'dark-bg': '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #f59e0b 100%);
+        }
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        .card-hover:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .cosmos-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 bg-gray-900 bg-opacity-95 backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <div class="text-2xl font-bold gradient-bg bg-clip-text text-transparent">CosmosBuilder</div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-8">
+                            <a href="#features" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Features</a>
+                            <a href="#modules" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Modules</a>
+                            <a href="#deployment" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Deployment</a>
+                            <a href="#pricing" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium transition-colors">Pricing</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="bg-cosmos-blue hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
+                        Sign In
+                    </button>
+                    <button class="gradient-bg hover:opacity-90 text-white px-6 py-2 rounded-lg font-medium transition-opacity">
+                        Start Building
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="pt-24 pb-12 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center">
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    Build <span class="gradient-bg bg-clip-text text-transparent">Sovereign Chains</span>
+                    <br>Without Writing Code
+                </h1>
+                <p class="text-xl md:text-2xl text-gray-300 mb-8 max-w-4xl mx-auto leading-relaxed">
+                    The world's first enterprise-grade No-Code Layer-1 blockchain builder powered by Cosmos SDK. 
+                    Launch custom blockchains in minutes, not months.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button class="gradient-bg hover:opacity-90 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-opacity cosmos-animation">
+                        Create Your Chain
+                    </button>
+                    <button class="border border-cosmos-purple text-cosmos-purple hover:bg-cosmos-purple hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                        Watch Demo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="py-12 border-t border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-cosmos-gold mb-2">500+</div>
+                    <div class="text-gray-400">Chains Built</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-cosmos-purple mb-2">$2B+</div>
+                    <div class="text-gray-400">TVL Secured</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-cosmos-blue mb-2">50+</div>
+                    <div class="text-gray-400">Integrations</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-cosmos-gold mb-2">99.9%</div>
+                    <div class="text-gray-400">Uptime SLA</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Grid -->
+    <section id="features" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Enterprise-Grade Features</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Everything you need to build, deploy, and manage production-ready sovereign blockchains
+                </p>
+            </div>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Feature Cards -->
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">No-Code Builder</h3>
+                    <p class="text-gray-400">Visual interface for chain configuration without writing Go code. Drag-and-drop modules and customize parameters.</p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Module Marketplace</h3>
+                    <p class="text-gray-400">Pre-built modules for DeFi, NFTs, Gaming, Enterprise, and more. Premium modules available with enterprise support.</p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">One-Click Deployment</h3>
+                    <p class="text-gray-400">Deploy to our managed cloud, AWS, GCP, Azure, or on-premise. Automatic scaling and monitoring included.</p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Block Explorer</h3>
+                    <p class="text-gray-400">Built-in real-time blockchain explorer with analytics, governance UI, and community dashboards.</p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">IBC Integration</h3>
+                    <p class="text-gray-400">Seamless Inter-Blockchain Communication with Cosmos ecosystem. Pre-configured relayers and monitoring.</p>
+                </div>
+
+                <div class="bg-gray-800 p-8 rounded-xl card-hover border border-gray-700">
+                    <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center mb-6">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Validator Hosting</h3>
+                    <p class="text-gray-400">Managed validator nodes with HSM/KMS security, global deployment, and SLA-backed uptime guarantee.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Module Marketplace -->
+    <section id="modules" class="py-20 px-4 bg-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Module Marketplace</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Choose from our comprehensive library of pre-built modules to power your blockchain
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <!-- Core Modules -->
+                <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-lg font-semibold mb-3 text-cosmos-blue">Core SDK</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• Auth & Permissions</li>
+                        <li>• Banking & Balances</li>
+                        <li>• Staking & Governance</li>
+                        <li>• Slashing & Parameters</li>
+                        <li>• Minting & Distribution</li>
+                    </ul>
+                </div>
+
+                <!-- DeFi Modules -->
+                <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-lg font-semibold mb-3 text-cosmos-purple">DeFi</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• AMM DEX</li>
+                        <li>• Orderbook Exchange</li>
+                        <li>• Lending/Borrowing</li>
+                        <li>• Yield Farming</li>
+                        <li>• Liquid Staking</li>
+                    </ul>
+                </div>
+
+                <!-- Advanced Modules -->
+                <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-lg font-semibold mb-3 text-cosmos-gold">Advanced</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• CosmWasm Contracts</li>
+                        <li>• EVM Compatibility</li>
+                        <li>• NFT Marketplace</li>
+                        <li>• Oracle Integration</li>
+                        <li>• Cross-chain Bridges</li>
+                    </ul>
+                </div>
+
+                <!-- Enterprise Modules -->
+                <div class="bg-gray-900 p-6 rounded-lg border border-gray-700">
+                    <h3 class="text-lg font-semibold mb-3 text-green-400">Enterprise</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li>• KYC/AML Compliance</li>
+                        <li>• Permissioned Networks</li>
+                        <li>• Custom Business Logic</li>
+                        <li>• Private Transactions</li>
+                        <li>• Audit Tools</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Deployment Options -->
+    <section id="deployment" class="py-20 px-4">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Flexible Deployment Options</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Choose how you want to deploy and manage your blockchain infrastructure
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">CosmosBuilder Cloud</h3>
+                    <p class="text-gray-400 mb-4">Fully managed blockchain hosting with automatic scaling, monitoring, and 24/7 support.</p>
+                    <div class="text-cosmos-gold font-semibold">Starting at $299/month</div>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9v-9m0-9v9"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Cloud Providers</h3>
+                    <p class="text-gray-400 mb-4">Deploy on AWS, Google Cloud, or Azure with our infrastructure templates and automation.</p>
+                    <div class="text-cosmos-gold font-semibold">Pay-as-you-use pricing</div>
+                </div>
+
+                <div class="text-center">
+                    <div class="w-16 h-16 gradient-bg rounded-full flex items-center justify-center mx-auto mb-6">
+                        <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Self-Hosted</h3>
+                    <p class="text-gray-400 mb-4">Full control with Docker, Kubernetes, or bare metal deployment options.</p>
+                    <div class="text-cosmos-gold font-semibold">Enterprise licensing</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="py-20 px-4 bg-gray-800">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-4xl font-bold mb-4">Transparent Pricing</h2>
+                <p class="text-xl text-gray-400 max-w-3xl mx-auto">
+                    Choose the plan that fits your blockchain development needs
+                </p>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Starter Plan -->
+                <div class="bg-gray-900 p-8 rounded-xl border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-3">Starter</h3>
+                    <div class="text-3xl font-bold text-cosmos-blue mb-2">$99</div>
+                    <div class="text-gray-400 mb-6">/month</div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>1 Blockchain</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Core Modules</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Basic Explorer</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Email Support</li>
+                        <li class="flex items-center"><span class="text-gray-500 mr-2">✗</span>Managed Hosting</li>
+                    </ul>
+                    <button class="w-full bg-gray-800 hover:bg-gray-700 text-white py-3 rounded-lg font-medium transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+
+                <!-- Professional Plan -->
+                <div class="bg-gradient-to-b from-cosmos-blue to-cosmos-purple p-8 rounded-xl border-2 border-cosmos-gold relative">
+                    <div class="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+                        <span class="bg-cosmos-gold text-black px-4 py-1 rounded-full text-sm font-medium">Most Popular</span>
+                    </div>
+                    <h3 class="text-xl font-semibold mb-3">Professional</h3>
+                    <div class="text-3xl font-bold text-white mb-2">$299</div>
+                    <div class="text-gray-200 mb-6">/month</div>
+                    <ul class="space-y-3 mb-8 text-sm text-white">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>5 Blockchains</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>All Modules</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Advanced Analytics</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Managed Hosting</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Priority Support</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>IBC Integration</li>
+                    </ul>
+                    <button class="w-full bg-white text-cosmos-blue hover:bg-gray-100 py-3 rounded-lg font-medium transition-colors">
+                        Start Free Trial
+                    </button>
+                </div>
+
+                <!-- Enterprise Plan -->
+                <div class="bg-gray-900 p-8 rounded-xl border border-gray-700">
+                    <h3 class="text-xl font-semibold mb-3">Enterprise</h3>
+                    <div class="text-3xl font-bold text-cosmos-gold mb-2">Custom</div>
+                    <div class="text-gray-400 mb-6">pricing</div>
+                    <ul class="space-y-3 mb-8 text-sm">
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Unlimited Blockchains</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Custom Modules</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>White Label Solution</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>Dedicated Support</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>SLA Guarantee</li>
+                        <li class="flex items-center"><span class="text-green-400 mr-2">✓</span>On-premise Deployment</li>
+                    </ul>
+                    <button class="w-full gradient-bg hover:opacity-90 text-white py-3 rounded-lg font-medium transition-opacity">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="py-20 px-4">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-4xl font-bold mb-6">Ready to Build Your Sovereign Chain?</h2>
+            <p class="text-xl text-gray-400 mb-8">
+                Join hundreds of projects that have launched their blockchains with CosmosBuilder
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <button class="gradient-bg hover:opacity-90 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-opacity">
+                    Start Building Now
+                </button>
+                <button class="border border-cosmos-purple text-cosmos-purple hover:bg-cosmos-purple hover:text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors">
+                    Schedule Demo
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 py-12 px-4 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid md:grid-cols-4 gap-8">
+                <div>
+                    <div class="text-2xl font-bold gradient-bg bg-clip-text text-transparent mb-4">CosmosBuilder</div>
+                    <p class="text-gray-400 text-sm">
+                        The world's first enterprise-grade No-Code Layer-1 blockchain builder.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Product</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-white transition-colors">Features</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Pricing</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Documentation</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">API Reference</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Company</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-white transition-colors">About</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Blog</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Careers</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="font-semibold mb-4">Support</h3>
+                    <ul class="text-sm text-gray-400 space-y-2">
+                        <li><a href="#" class="hover:text-white transition-colors">Help Center</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Community</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Status</a></li>
+                        <li><a href="#" class="hover:text-white transition-colors">Security</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
+                <p>&copy; 2025 CosmosBuilder. All rights reserved. Built with ❤️ by MiniMax Agent.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll effect to navigation
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 100) {
+                nav.classList.add('bg-opacity-100');
+            } else {
+                nav.classList.remove('bg-opacity-100');
+            }
+        });
+    </script>
+</body>
+</html>

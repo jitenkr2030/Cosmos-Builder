@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CosmosBuilder - Module Marketplace</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'cosmos-blue': '#1e3a8a',
+                        'cosmos-purple': '#7c3aed',
+                        'cosmos-gold': '#f59e0b',
+                        'cosmos-green': '#10b981',
+                        'dark-bg': '#0f172a'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 50%, #f59e0b 100%);
+        }
+        .module-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .module-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        .module-selected {
+            border: 2px solid #7c3aed;
+            background: rgba(124, 58, 237, 0.1);
+        }
+        .category-tab {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .category-active {
+            background: linear-gradient(135deg, #1e3a8a 0%, #7c3aed 100%);
+            color: white;
+        }
+        .premium-badge {
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="text-xl font-bold gradient-bg bg-clip-text text-transparent">CosmosBuilder</div>
+                    <div class="text-gray-400">|</div>
+                    <div class="text-sm text-gray-300">Module Marketplace</div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="relative">
+                        <input type="text" placeholder="Search modules..." class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 pl-10 focus:outline-none focus:border-cosmos-purple w-64">
+                        <svg class="absolute left-3 top-2.5 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="w-8 h-8 bg-cosmos-purple rounded-full"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="flex">
+        <!-- Sidebar -->
+        <div class="w-80 bg-gray-800 min-h-screen p-6">
+            <div class="mb-8">
+                <h2 class="text-lg font-semibold mb-4">Categories</h2>
+                <div class="space-y-2">
+                    <div class="category-tab category-active px-4 py-2 rounded-lg">All Modules</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">Core SDK</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">DeFi</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">Smart Contracts</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">NFT & Gaming</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">Enterprise</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">Oracle</div>
+                    <div class="category-tab px-4 py-2 rounded-lg hover:bg-gray-700">Cross-chain</div>
+                </div>
+            </div>
+            
+            <!-- Selected Modules -->
+            <div class="mb-8">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Selected Modules (8)</h3>
+                <div class="space-y-2">
+                    <div class="bg-gray-700 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-medium">Auth Module</div>
+                            <button class="text-red-400 hover:text-red-300">×</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-medium">Banking Module</div>
+                            <button class="text-red-400 hover:text-red-300">×</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-medium">Staking Module</div>
+                            <button class="text-red-400 hover:text-red-300">×</button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-700 p-3 rounded-lg">
+                        <div class="flex items-center justify-between">
+                            <div class="text-sm font-medium">CosmWasm</div>
+                            <div class="premium-badge text-xs px-2 py-1 rounded">Premium</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Compatibility Check -->
+            <div class="bg-gray-900 p-4 rounded-lg">
+                <h3 class="text-sm font-semibold text-gray-400 mb-3">Compatibility</h3>
+                <div class="text-sm">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-300">Module Conflicts</span>
+                        <span class="text-green-400">✓ None</span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-300">Version Conflicts</span>
+                        <span class="text-green-400">✓ Compatible</span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-300">Gas Impact</span>
+                        <span class="text-cosmos-gold">⚠ Medium</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 p-8">
+            <!-- Header -->
+            <div class="mb-8">
+                <h1 class="text-3xl font-bold mb-2">Module Marketplace</h1>
+                <p class="text-gray-400">Choose from our comprehensive library of pre-built modules to power your blockchain</p>
+            </div>
+
+            <!-- Filter Bar -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center space-x-4">
+                    <select class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-cosmos-purple">
+                        <option>All Modules</option>
+                        <option>Free Only</option>
+                        <option>Premium Only</option>
+                        <option>Popular</option>
+                        <option>Recently Added</option>
+                    </select>
+                    <select class="bg-gray-700 border border-gray-600 rounded-lg px-4 py-2 focus:outline-none focus:border-cosmos-purple">
+                        <option>Sort by Name</option>
+                        <option>Sort by Popularity</option>
+                        <option>Sort by Gas Cost</option>
+                        <option>Sort by Development</option>
+                    </select>
+                </div>
+                <div class="text-sm text-gray-400">
+                    47 modules available
+                </div>
+            </div>
+
+            <!-- Modules Grid -->
+            <div class="grid lg:grid-cols-3 md:grid-cols-2 gap-6">
+                <!-- Core Modules -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700 module-selected">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-cosmos-blue rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Core</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Auth Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Account management, permissions, and signature verification for your blockchain.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Low</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>3 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-green-400">Required</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Included</div>
+                        <button class="text-cosmos-purple text-sm">Configure</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700 module-selected">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-cosmos-gold rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Core</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Banking Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Token transfers, balances, and denomination metadata management.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Low</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>5 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-green-400">Required</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Included</div>
+                        <button class="text-cosmos-purple text-sm">Configure</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700 module-selected">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-cosmos-purple rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Core</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Staking Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Validator management, delegation, and proof-of-stake consensus.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Medium</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>8 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-green-400">Required</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Included</div>
+                        <button class="text-cosmos-purple text-sm">Configure</button>
+                    </div>
+                </div>
+
+                <!-- DeFi Modules -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cosmos-purple to-cosmos-blue rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">AMM DEX Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Automated Market Maker for decentralized exchanges with liquidity pools.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>High</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>12 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$99/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cosmos-gold to-cosmos-purple rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Lending Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Decentralized lending and borrowing protocol with interest rates.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Very High</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>15 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$149/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-cosmos-green rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Free</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Token Factory</h3>
+                    <p class="text-gray-400 text-sm mb-4">Create and manage new token denominations on your blockchain.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Medium</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>4 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Free</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <!-- Smart Contract Modules -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700 module-selected">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">CosmWasm</h3>
+                    <p class="text-gray-400 text-sm mb-4">WebAssembly smart contracts support for Rust-based decentralized applications.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>High</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>10 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$199/month</div>
+                        <button class="text-cosmos-purple text-sm">Configure</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-gray-600 to-gray-800 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">EVM Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Ethereum Virtual Machine compatibility for Solidity smart contracts.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Very High</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>18 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$299/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <!-- NFT & Gaming -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-pink-500 to-purple-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zM21 5a2 2 0 00-2-2h-4a2 2 0 00-2 2v12a4 4 0 004 4h4a2 2 0 002-2V5z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Free</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">NFT Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Non-fungible token support for digital collectibles and unique assets.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Medium</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>6 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Free</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <!-- Oracle Module -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Oracle Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">External data feeds for price oracles and off-chain information.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>High</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>8 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$79/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <!-- IBC Modules -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700 module-selected">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-cosmos-blue to-cosmos-purple rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.367 2.684 3 3 0 00-5.367-2.684z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 bg-cosmos-blue rounded">Core</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">IBC Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Inter-Blockchain Communication for cross-chain interactions.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Medium</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>7 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-green-400">Recommended</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-green text-sm font-medium">Included</div>
+                        <button class="text-cosmos-purple text-sm">Configure</button>
+                    </div>
+                </div>
+
+                <!-- Enterprise Modules -->
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-green-600 to-blue-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">KYC/AML Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Know Your Customer and Anti-Money Laundering compliance tools.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Low</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>12 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$149/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+
+                <div class="module-card bg-gray-800 p-6 rounded-xl border border-gray-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-gradient-to-r from-purple-600 to-pink-600 rounded-lg flex items-center justify-center">
+                            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="text-xs px-2 py-1 premium-badge rounded">Premium</div>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">Permissioned Module</h3>
+                    <p class="text-gray-400 text-sm mb-4">Private blockchain features with role-based access control.</p>
+                    <div class="space-y-2 text-xs text-gray-400">
+                        <div class="flex justify-between">
+                            <span>Gas Cost:</span>
+                            <span>Low</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Config:</span>
+                            <span>15 options</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span class="text-gray-400">Optional</span>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex justify-between items-center">
+                        <div class="text-cosmos-gold text-sm font-medium">$199/month</div>
+                        <button class="text-cosmos-purple text-sm">Add Module</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex justify-between items-center mt-12">
+                <button class="px-6 py-3 border border-gray-600 text-gray-300 rounded-lg hover:bg-gray-700 transition-colors">
+                    ← Previous Step
+                </button>
+                <div class="flex space-x-4">
+                    <button class="px-6 py-3 border border-cosmos-gold text-cosmos-gold rounded-lg hover:bg-cosmos-gold hover:text-black transition-colors">
+                        Save Draft
+                    </button>
+                    <button class="px-8 py-3 gradient-bg text-white rounded-lg hover:opacity-90 transition-opacity">
+                        Next Step →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Module selection handling
+        document.querySelectorAll('.module-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const isSelected = this.classList.contains('module-selected');
+                if (isSelected) {
+                    this.classList.remove('module-selected');
+                } else {
+                    this.classList.add('module-selected');
+                }
+                updateSelectedCount();
+            });
+        });
+
+        // Category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('category-active'));
+                this.classList.add('category-active');
+            });
+        });
+
+        function updateSelectedCount() {
+            const selected = document.querySelectorAll('.module-selected').length;
+            document.querySelector('.text-sm.text-gray-400').textContent = `${selected} modules selected`;
+        }
+    </script>
+</body>
+</html>
