@@ -1,6 +1,6 @@
 # CosmosBuilder Platform
 
-**Author:** MiniMax Agent  
+**Author:** Jitender Kumar  
 **Version:** 1.0  
 **Date:** 2025-11-26  
 
@@ -426,7 +426,7 @@ Ready to build your sovereign blockchain? Let's get started:
 
 <div align="center">
 
-**Made with ❤️ by MiniMax Agent**
+**Made with ❤️ by Jitender Kumar**
 
 [🌟 Star on GitHub](https://github.com/your-org/cosmosbuilder) • 
 [📖 Documentation](https://docs.cosmosbuilder.com) • 
